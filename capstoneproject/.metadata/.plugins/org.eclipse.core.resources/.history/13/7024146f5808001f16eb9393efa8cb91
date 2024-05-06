@@ -1,0 +1,14 @@
+package com.capstone.cartservice.service;
+
+import java.util.List;
+
+import com.capstone.cartservice.entity.Cart;
+
+public interface CartService {
+
+	List<Cart> getAllCarts();
+
+	Object getCartById(Long id);
+
+	Cart addToCart(Cart cart);
+}

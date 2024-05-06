@@ -1,0 +1,48 @@
+package com.capstone.userservice.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.capstone.userservice.entity.Admin;
+import com.capstone.userservice.repository.AdminRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class AdminServiceImpl implements AdminService {
+
+    @Autowired
+    private AdminRepository adminRepository;
+
+    @Override
+    public List<Admin> getAllAdmins() {
+        return adminRepository.findAll();
+    }
+
+    @Override
+    public Optional<Admin> getAdminById(Long id) {
+        return adminRepository.findById(id);
+    }
+
+    @Override
+    public Admin addAdmin(Admin admin) {
+        return adminRepository.save(admin);
+    }
+
+    public Admin updateAdmin(Long id, Admin newAdmin) {
+        Optional<Admin> optionalAdmin = adminRepository.findById(id);
+        if (optionalAdmin.isPresent()) {
+            Admin existingAdmin = optionalAdmin.get();
+            existingAdmin.setUsername(newAdmin.getUsername());
+            existingAdmin.setPassword(newAdmin.getPassword());
+            return adminRepository.save(existingAdmin);
+        }
+        return null; // Or throw an exception
+    }
+
+    @Override
+    public void deleteAdmin(Long id) {
+        adminRepository.deleteById(id);
+    }
+}

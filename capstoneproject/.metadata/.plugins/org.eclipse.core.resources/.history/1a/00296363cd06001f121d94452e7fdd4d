@@ -1,0 +1,19 @@
+package com.capstone.userservice.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.capstone.mobileservice.entity.Mobile;
+
+public interface AdminService {
+
+	List<Mobile> getAllMobiles();
+
+	Optional<Mobile> getMobileById(Long id);
+
+	Mobile saveMobile(Mobile mobile);
+
+	Mobile updateMobile(Long id, Mobile updatedMobile);
+
+	void deleteMobile(Long id);
+}

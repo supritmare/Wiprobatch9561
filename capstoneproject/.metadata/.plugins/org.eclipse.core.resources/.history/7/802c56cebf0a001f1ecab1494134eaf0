@@ -1,0 +1,19 @@
+package com.capstone.cartservice.model;
+
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class Customer extends User{
+
+	Long id;
+	String userName;
+	String password;
+	String name;
+	String email;
+	String phoneNumber;
+
+}

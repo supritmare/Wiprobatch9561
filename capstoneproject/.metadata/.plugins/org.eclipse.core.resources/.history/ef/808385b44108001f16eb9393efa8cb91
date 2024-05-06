@@ -1,0 +1,5 @@
+package com.capstone.cartservice.exception;
+
+public class ResourceNotFoundException extends Exception {
+
+}

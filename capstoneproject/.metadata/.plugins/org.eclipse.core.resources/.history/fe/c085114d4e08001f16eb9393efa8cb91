@@ -1,0 +1,5 @@
+package com.capstone.cartservice.model;
+
+public class Cart {
+
+}

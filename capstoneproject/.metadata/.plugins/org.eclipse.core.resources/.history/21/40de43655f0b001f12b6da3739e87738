@@ -1,0 +1,17 @@
+package com.capstone.cartservice.service;
+
+import java.util.List;
+
+import com.capstone.cartservice.entity.Cart;
+import com.capstone.cartservice.entity.CartItem;
+import com.capstone.cartservice.exception.ResourceNotFoundException;
+import com.capstone.cartservice.model.CartItemResponse;
+
+public interface CartItemService {
+
+	Cart createCart(Long customerId);
+
+	Cart getCartById(Long cartId);
+
+	List<CartItem> getItemsInCart(Long cartId);
+}

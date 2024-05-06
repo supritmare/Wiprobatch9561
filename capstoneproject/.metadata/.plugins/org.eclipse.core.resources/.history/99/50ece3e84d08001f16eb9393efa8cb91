@@ -1,0 +1,49 @@
+package com.capstone.cartservice.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.capstone.cartservice.entity.CartItem;
+import com.capstone.cartservice.exception.ResourceNotFoundException;
+import com.capstone.cartservice.repository.CartItemRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class CartItemServiceImpl implements CartItemService {
+
+	@Autowired
+	private CartItemRepository cartItemRepository;
+
+	@Override
+	public List<CartItem> getAllCartItems() {
+		return cartItemRepository.findAll();
+	}
+
+	@Override
+	public Optional<CartItem> getCartItemById(Long id) {
+		return cartItemRepository.findById(id);
+	}
+
+	@Override
+	public CartItem addToCart(CartItem cartItem) {
+		return cartItemRepository.save(cartItem);
+	}
+
+	@Override
+	public CartItem updateCartItem(Long id, CartItem newCartItem) {
+		Optional<CartItem> optionalCartItem = cartItemRepository.findById(id);
+		if (optionalCartItem.isPresent()) {
+			CartItem existingCartItem = optionalCartItem.get();
+			existingCartItem.setQuantity(newCartItem.getQuantity());
+			return cartItemRepository.save(existingCartItem);
+		}
+		throw new ResourceNotFoundException("CartItem with id " + id + " not found");
+	}
+
+	@Override
+	public void deleteCartItem(Long id) {
+		cartItemRepository.deleteById(id);
+	}
+}

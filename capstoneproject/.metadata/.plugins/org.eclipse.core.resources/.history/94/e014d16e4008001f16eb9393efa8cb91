@@ -1,0 +1,5 @@
+package com.capstone.cartservice.entity;
+
+public class CartItem {
+
+}

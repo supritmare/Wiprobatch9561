@@ -1,0 +1,20 @@
+package com.capstone.userservice.service;
+
+import java.util.List;
+
+import com.capstone.userservice.entity.User;
+
+public interface UserService {
+
+	List<User> getAllUsers();
+
+	User getUserById(Long id);
+
+	User getUserByUsername(String username);
+
+	User createUser(User user);
+
+	User updateUser(Long id, User updatedUser);
+
+	void deleteUser(Long id);
+}

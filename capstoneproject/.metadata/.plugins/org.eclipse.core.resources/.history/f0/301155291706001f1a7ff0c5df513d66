@@ -1,0 +1,10 @@
+spring.application.name=mobile-service
+
+server.port = 8081
+
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:XE
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=c##wipro
+spring.datasource.password=wipro9561
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true

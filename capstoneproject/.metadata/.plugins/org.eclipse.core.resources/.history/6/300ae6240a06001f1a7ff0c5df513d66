@@ -1,0 +1,5 @@
+package com.capstone.mobileservice.repository;
+
+public interface MobileRepository {
+
+}

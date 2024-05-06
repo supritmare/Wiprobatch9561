@@ -1,0 +1,5 @@
+package com.capstone.userservice.service;
+
+public interface CustomerService {
+
+}

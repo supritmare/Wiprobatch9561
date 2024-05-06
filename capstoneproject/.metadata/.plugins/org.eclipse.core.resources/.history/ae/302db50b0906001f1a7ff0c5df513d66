@@ -1,0 +1,20 @@
+package com.capstone.mobileservice.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "mobile_tbl")
+public class Mobile {
+
+	private Long id;
+	private String model;
+	private String brand;
+	private double price;
+}

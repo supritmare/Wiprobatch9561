@@ -1,0 +1,5 @@
+package com.capstone.orderservice.exception;
+
+public class ResourceNotFoundException {
+
+}

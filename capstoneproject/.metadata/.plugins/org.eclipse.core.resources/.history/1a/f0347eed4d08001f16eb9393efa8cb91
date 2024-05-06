@@ -1,0 +1,19 @@
+package com.capstone.cartservice.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.capstone.cartservice.entity.CartItem;
+
+public interface CartItemService {
+
+	List<CartItem> getAllCartItems();
+
+	Optional<CartItem> getCartItemById(Long id);
+
+	CartItem addToCart(CartItem cartItem);
+
+	CartItem updateCartItem(Long id, CartItem newCartItem);
+
+	void deleteCartItem(Long id);
+}

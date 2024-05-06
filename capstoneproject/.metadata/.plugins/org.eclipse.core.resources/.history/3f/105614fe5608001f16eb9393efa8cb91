@@ -1,0 +1,19 @@
+package com.capstone.cartservice.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.capstone.cartservice.controller.CartResponse;
+import com.capstone.cartservice.entity.Cart;
+import com.capstone.cartservice.payload.CartItemPayload;
+
+public interface CartService {
+
+	Cart createCart(long customerId, List<CartItemPayload> mobileCarts);
+
+	CartResponse getCartDetails(long cartId);
+
+	List<CartResponse> getAllCarts();
+
+
+}

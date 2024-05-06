@@ -1,0 +1,47 @@
+package com.capstone.userservice.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.capstone.mobileservice.entity.Mobile;
+import com.capstone.mobileservice.repository.MobileRepository;
+import com.capstone.userservice.repository.AdminRepository;
+
+public class AdminServiceImpl implements AdminService {
+
+	@Autowired
+	private MobileRepository mobileRepository;
+
+	@Override
+	public List<Mobile> getAllMobiles() {
+		return mobileRepository.findAll();
+	}
+
+	@Override
+	public Optional<Mobile> getMobileById(Long id) {
+		return mobileRepository.findById(id);
+	}
+
+	@Override
+	public Mobile saveMobile(Mobile mobile) {
+		return mobileRepository.save(mobile);
+	}
+
+	@Override
+	public Mobile updateMobile(Long id, Mobile updatedMobile) {
+		if (mobileRepository.existsById(id)) {
+			updatedMobile.setId(id);
+			return mobileRepository.save(updatedMobile);
+		} else {
+			throw new RuntimeException("Mobile with id " + id + " not found");
+		}
+	}
+
+	@Override
+	public void deleteMobile(Long id) {
+		mobileRepository.deleteById(id);
+	}
+
+}

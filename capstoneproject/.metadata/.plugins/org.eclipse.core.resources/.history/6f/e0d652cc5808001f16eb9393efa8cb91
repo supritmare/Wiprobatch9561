@@ -1,0 +1,33 @@
+package com.capstone.cartservice.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.capstone.cartservice.entity.Cart;
+import com.capstone.cartservice.payload.CartItemPayload;
+import com.capstone.cartservice.payload.CartPayload;
+import com.capstone.cartservice.service.CartService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/cart")
+public class CartController {
+
+	@Autowired
+	private CartService cartService;
+
+	@GetMapping
+	public ResponseEntity<List<Cart>> getAllCarts() {
+		List<Cart> carts = cartService.getAllCarts();
+		return new ResponseEntity<>(carts, HttpStatus.OK);
+	}
+
+	@PostMapping
+	public ResponseEntity<Cart> addToCart(@RequestBody Cart cart) {
+		Cart addedCart = cartService.addToCart(cart);
+		return new ResponseEntity<>(addedCart, HttpStatus.CREATED);
+	}
+}

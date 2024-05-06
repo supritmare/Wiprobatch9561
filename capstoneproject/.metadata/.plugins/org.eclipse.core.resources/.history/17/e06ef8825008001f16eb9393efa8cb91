@@ -1,0 +1,5 @@
+package com.capstone.cartservice.payload;
+
+public class CartPayload {
+
+}

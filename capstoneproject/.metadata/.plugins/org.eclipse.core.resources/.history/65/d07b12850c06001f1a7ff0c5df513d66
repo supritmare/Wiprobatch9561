@@ -1,0 +1,5 @@
+package com.capstone.mobileservice.exception;
+
+public class GlobalExceptionHandler {
+
+}

@@ -1,0 +1,109 @@
+package com.capstone.mobileservice.service;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.capstone.mobileservice.entity.Mobile;
+import com.capstone.mobileservice.repository.MobileRepository;
+
+@SpringBootTest
+public class MobileServiceTest {
+
+	@Mock
+	private MobileService mobileService;
+
+	@InjectMocks
+	private MobileServiceImpl mobileServiceImpl;
+
+	@Test
+	public void testGetAllMobiles() {
+		List<Mobile> mobiles = new ArrayList<>();
+		mobiles.add(new Mobile(1L, "Samsung", "Galaxy S20", 1000.0));
+		mobiles.add(new Mobile(2L, "Apple", "iPhone 12", 1200.0));
+		when(mobileService.getAllMobiles()).thenReturn(mobiles);
+		List<Mobile> result = mobileServiceImpl.getAllMobiles();
+		assertEquals(2, result.size());
+	}
+
+	@Test
+	public void testGetMobileById() {
+		Long id = 1L;
+		when(mobileService.getMobileById(id)).thenReturn(Optional.of(mobiles.get(0)));
+		Optional<Mobile> result = mobileServiceImpl.getMobileById(id);
+		assertTrue(result.isPresent());
+		assertEquals("Samsung", result.get().getBrand());
+	}
+
+	@Test
+	public void testGetMobileById_NotFound() {
+		Long id = 3L;
+		when(mobileService.getMobileById(id)).thenReturn(Optional.empty());
+		Optional<Mobile> result = mobileServiceImpl.getMobileById(id);
+		assertFalse(result.isPresent());
+	}
+
+	@Test
+	public void testSaveMobile() {
+		Mobile mobile = new Mobile(3L, "Google", "Pixel 6", 900.0);
+		when(mobileService.saveMobile(mobile)).thenReturn(mobile);
+		Mobile savedMobile = mobileServiceImpl.saveMobile(mobile);
+		assertEquals("Google", savedMobile.getBrand());
+	}
+
+	@Test
+	public void testUpdateMobile() {
+		Long id = 1L;
+		Mobile updatedMobile = new Mobile(1L, "Samsung", "Galaxy S21", 1100.0);
+		when(mobileService.updateMobile(id, updatedMobile)).thenReturn(updatedMobile);
+		Mobile result = mobileServiceImpl.updateMobile(id, updatedMobile);
+		assertEquals("Galaxy S21", result.getModel());
+	}
+
+	@Test
+	public void testDeleteMobile() {
+		Long id = 1L;
+		mobileServiceImpl.deleteMobile(id);
+		verify(mobileService).deleteMobile(id);
+	}
+
+	@Test
+	public void testSearchMobilesByBrand() {
+		String brand = "Samsung";
+		when(mobileService.searchMobilesByBrand(brand)).thenReturn(mobiles);
+		List<Mobile> result = mobileServiceImpl.searchMobilesByBrand(brand);
+		assertEquals(1, result.size());
+		assertEquals("Samsung", result.get(0).getBrand());
+	}
+
+	@Test
+	public void testSearchMobilesByModel() {
+		String model = "iPhone 12";
+		when(mobileService.searchMobilesByModel(model)).thenReturn(mobiles);
+		List<Mobile> result = mobileServiceImpl.searchMobilesByModel(model);
+		assertEquals(1, result.size());
+		assertEquals("iPhone 12", result.get(0).getModel());
+	}
+
+	@Test
+	public void testSearchMobilesByPriceRange() {
+		double minPrice = 1000.0;
+		double maxPrice = 1200.0;
+		when(mobileService.searchMobilesByPriceRange(minPrice, maxPrice)).thenReturn(mobiles);
+		List<Mobile> result = mobileServiceImpl.searchMobilesByPriceRange(minPrice, maxPrice);
+		assertEquals(2, result.size());
+	}
+}

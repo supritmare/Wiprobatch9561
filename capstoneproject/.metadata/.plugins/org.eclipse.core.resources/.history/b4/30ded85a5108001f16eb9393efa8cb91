@@ -1,0 +1,5 @@
+package com.capstone.cartservice.service;
+
+public interface CustomerServiceConsumer {
+
+}

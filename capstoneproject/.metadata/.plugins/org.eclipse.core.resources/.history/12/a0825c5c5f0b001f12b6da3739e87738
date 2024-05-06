@@ -1,0 +1,26 @@
+package com.capstone.cartservice.controller;
+
+import com.capstone.cartservice.entity.CartItem;
+import com.capstone.cartservice.service.CartItemService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/cart-items")
+public class CartItemController {
+
+    @Autowired
+    private CartItemService cartItemService;
+
+    @PostMapping("/{cartId}")
+    public CartItem addCartItem(@PathVariable Long cartId, @RequestBody CartItem cartItem) {
+        return cartItemService.addCartItem(cartId, cartItem);
+    }
+
+    @DeleteMapping("/{cartItemId}")
+    public void removeCartItem(@PathVariable Long cartItemId) {
+        cartItemService.removeCartItem(cartItemId);
+    }
+
+    // Add more endpoints as needed
+}

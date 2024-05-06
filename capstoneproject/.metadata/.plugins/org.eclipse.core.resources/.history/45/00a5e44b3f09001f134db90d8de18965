@@ -1,0 +1,26 @@
+package com.capstone.cartservice.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.capstone.cartservice.entity.Cart;
+import com.capstone.cartservice.repository.CartRepository;
+
+@Service
+public class CartServiceImpl implements CartService {
+
+	@Autowired
+	private CartRepository cartRepository;
+
+	@Override
+	public List<Cart> getAllCarts() {
+		return cartRepository.findAll();
+	}
+
+	@Override
+	public Cart addToCart(Cart cart) {
+		return cartRepository.save(cart);
+	}
+}

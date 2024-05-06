@@ -1,0 +1,22 @@
+package com.capstone.cartservice.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.capstone.cartservice.entity.Cart;
+import com.capstone.cartservice.exception.ResourceNotFoundException;
+import com.capstone.cartservice.service.CartService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/carts")
+public class CartController {
+
+	@Autowired
+	private CartService cartService;
+
+	
+}

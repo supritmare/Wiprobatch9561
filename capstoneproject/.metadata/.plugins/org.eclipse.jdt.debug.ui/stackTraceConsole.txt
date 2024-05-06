@@ -1,0 +1,14 @@
+ @Override
+    public List<Mobile> searchMobilesByBrand(String brand) {
+        return mobileRepository.findByBrand(brand);
+    }
+
+    @Override
+    public List<Mobile> searchMobilesByModel(String model) {
+        return mobileRepository.findByModelContainingIgnoreCase(model);
+    }
+
+    @Override
+    public List<Mobile> searchMobilesByPriceRange(double minPrice, double maxPrice) {
+        return mobileRepository.findByPriceBetween(minPrice, maxPrice);
+    }

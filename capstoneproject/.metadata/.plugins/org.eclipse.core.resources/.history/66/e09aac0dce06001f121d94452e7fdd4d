@@ -1,0 +1,55 @@
+package com.capstone.userservice.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.capstone.mobileservice.entity.Mobile;
+import com.capstone.mobileservice.repository.MobileRepository;
+import com.capstone.userservice.service.AdminService;
+
+@RestController
+@RequestMapping("/admin")
+public class AdminController {
+
+	@Autowired
+	private AdminService adminService;
+	
+	@Autowired
+	private MobileRepository mobileRepository;
+	
+	 // Methods for mobile operations
+	
+	@GetMapping("/all")
+    public List<Mobile> getAllMobiles() {
+        return mobileRepository.findAll();
+    }
+    
+	@PostMapping("/add")
+    public Mobile saveMobile(Mobile mobile) {
+        return mobileRepository.save(mobile);
+    }
+    
+	@PutMapping("{id}")
+    public void updateMobile(Long id, Mobile mobile) {
+        Mobile existingMobile = mobileRepository.findById(id).orElse(null);
+        if (existingMobile != null) {
+            existingMobile.setId(mobile.getId());
+            existingMobile.setModel(mobile.getModel());
+            existingMobile.setBrand(mobile.getBrand());
+            existingMobile.setPrice(mobile.getPrice());
+            mobileRepository.save(existingMobile);
+        }
+    }
+    
+	@DeleteMapping("/{id}")
+    public void deleteMobile(Long id) {
+        mobileRepository.deleteById(id);
+    }
+}

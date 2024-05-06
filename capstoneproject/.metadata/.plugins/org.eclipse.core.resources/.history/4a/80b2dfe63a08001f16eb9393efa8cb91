@@ -1,0 +1,60 @@
+package com.capstone.userservice.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.capstone.userservice.entity.Admin;
+import com.capstone.userservice.entity.Customer;
+import com.capstone.userservice.exception.ResourceNotFoundException;
+import com.capstone.userservice.service.AdminService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("admins")
+public class AdminController {
+
+	@Autowired
+	private AdminService adminService;
+
+	@Autowired
+	private CustomerService customerService;
+
+	@GetMapping("/all")
+	public ResponseEntity<List<Admin>> getAllAdmins() {
+		List<Admin> admins = adminService.getAllAdmins();
+		return new ResponseEntity<>(admins, HttpStatus.OK);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Admin> getAdminById(@PathVariable Long id) {
+		Admin admin = adminService.getAdminById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Admin with id " + id + " not found"));
+		return new ResponseEntity<>(admin, HttpStatus.OK);
+	}
+
+	@PostMapping("/add")
+	public ResponseEntity<Admin> addAdmin(@RequestBody Admin admin) {
+		Admin createdAdmin = adminService.addAdmin(admin);
+		return new ResponseEntity<>(createdAdmin, HttpStatus.CREATED);
+	}
+
+	// Additional functionality for Admins
+	@GetMapping("/{adminId}/customers")
+	public ResponseEntity<List<Customer>> viewAllCustomers(@PathVariable Long adminId) {
+		// Implement logic to check if the requesting admin has permission to view
+		// customers
+		List<Customer> customers = customerService.getAllCustomers();
+		return new ResponseEntity<>(customers, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{adminId}/customers/{customerId}")
+	public ResponseEntity<Void> deleteCustomerByAdmin(@PathVariable Long adminId, @PathVariable Long customerId) {
+		// Implement logic to check if the requesting admin has permission to delete
+		// customers
+		customerService.deleteCustomer(customerId);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+}

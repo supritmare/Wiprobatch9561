@@ -1,0 +1,6 @@
+package com.capstone.userservice.service;
+
+public class AdminServiceimpl implements AdminService {
+
+	
+}

@@ -1,0 +1,11 @@
+package com.capstone.userservice.entity;
+
+public class Customer {
+
+	Long id;
+	String userName;
+	String password;
+	String name;
+	String email;
+	String phoneNumber;
+}

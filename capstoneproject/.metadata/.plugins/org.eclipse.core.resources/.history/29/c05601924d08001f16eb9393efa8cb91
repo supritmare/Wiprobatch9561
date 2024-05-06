@@ -1,0 +1,51 @@
+package com.capstone.cartservice.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.capstone.cartservice.entity.CartItem;
+import com.capstone.cartservice.exception.ResourceNotFoundException;
+import com.capstone.cartservice.service.CartItemService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/cartItems")
+public class CartItemController {
+
+    @Autowired
+    private CartItemService cartItemService;
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CartItem>> getAllCartItems() {
+        List<CartItem> cartItems = cartItemService.getAllCartItems();
+        return new ResponseEntity<>(cartItems, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CartItem> getCartItemById(@PathVariable Long id) {
+        CartItem cartItem = cartItemService.getCartItemById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("CartItem with id " + id + " not found"));
+        return new ResponseEntity<>(cartItem, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<CartItem> addToCart(@RequestBody CartItem cartItem) {
+        CartItem addedCartItem = cartItemService.addToCart(cartItem);
+        return new ResponseEntity<>(addedCartItem, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CartItem> updateCartItem(@PathVariable Long id, @RequestBody CartItem cartItem) {
+        CartItem updatedCartItem = cartItemService.updateCartItem(id, cartItem);
+        return new ResponseEntity<>(updatedCartItem, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCartItem(@PathVariable Long id) {
+        cartItemService.deleteCartItem(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}

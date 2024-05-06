@@ -1,0 +1,124 @@
+package com.capstone.userservice.service;
+
+import com.capstone.userservice.entity.Admin;
+import com.capstone.userservice.exception.ResourceNotFoundException;
+import com.capstone.userservice.repository.AdminRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class AdminServiceTest {
+
+	@Mock
+	private AdminRepository adminRepository;
+
+	@InjectMocks
+	private AdminServiceImpl adminService;
+
+	private Admin testAdmin;
+
+	@BeforeEach
+	void setUp() {
+		testAdmin = new Admin();
+		testAdmin.setId(1L);
+		testAdmin.setUsername("testUsername");
+		testAdmin.setPassword("testPassword");
+	}
+
+	@Test
+	void testGetAllAdmins() {
+		List<Admin> admins = new ArrayList<>();
+		admins.add(testAdmin);
+
+		when(adminRepository.findAll()).thenReturn(admins);
+
+		List<Admin> retrievedAdmins = adminService.getAllAdmins();
+
+		assertEquals(admins.size(), retrievedAdmins.size());
+		assertEquals(admins.get(0), retrievedAdmins.get(0));
+	}
+
+	@Test
+	void testGetAdminById() {
+		when(adminRepository.findById(1L)).thenReturn(Optional.of(testAdmin));
+
+		Admin retrievedAdmin = adminService.getAdminById(1L).orElse(null);
+
+		assertNotNull(retrievedAdmin);
+		assertEquals(testAdmin, retrievedAdmin);
+	}
+
+	@Test
+	void testGetAdminByIdNotFound() {
+		when(adminRepository.findById(2L)).thenReturn(Optional.empty());
+
+		ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+			adminService.getAdminById(2L);
+		});
+
+		assertEquals("Admin with id 2 not found", exception.getMessage());
+	}
+
+	@Test
+	void testAddAdmin() {
+		when(adminRepository.save(testAdmin)).thenReturn(testAdmin);
+
+		Admin addedAdmin = adminService.addAdmin(testAdmin);
+
+		assertNotNull(addedAdmin);
+		assertEquals(testAdmin, addedAdmin);
+	}
+
+	@Test
+	void testUpdateAdmin() {
+		when(adminRepository.findById(1L)).thenReturn(Optional.of(testAdmin));
+		when(adminRepository.save(testAdmin)).thenReturn(testAdmin);
+
+		Admin updatedAdmin = adminService.updateAdmin(1L, testAdmin);
+
+		assertNotNull(updatedAdmin);
+		assertEquals(testAdmin, updatedAdmin);
+	}
+
+	@Test
+	void testUpdateAdminNotFound() {
+		when(adminRepository.findById(2L)).thenReturn(Optional.empty());
+
+		ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+			adminService.updateAdmin(2L, testAdmin);
+		});
+
+		assertEquals("Admin with id 2 not found", exception.getMessage());
+	}
+
+	@Test
+	void testDeleteAdmin() {
+		doNothing().when(adminRepository).deleteById(1L);
+
+		assertDoesNotThrow(() -> {
+			adminService.deleteAdmin(1L);
+		});
+	}
+
+	@Test
+	void testDeleteAdminNotFound() {
+		doThrow(ResourceNotFoundException.class).when(adminRepository).deleteById(1L);
+
+		ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+			adminService.deleteAdmin(1L);
+		});
+
+		assertEquals("Admin with id 1 not found", exception.getMessage());
+	}
+}
